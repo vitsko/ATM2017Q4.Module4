@@ -47,5 +47,35 @@
 
             Assert.AreEqual(toParse1 + toParse2, calc.Add(toParse1, toParse2));
         }
+
+        [TestMethod]
+        public void TestAddWithNegativeInfinity()
+        {
+            double first = double.NegativeInfinity,
+                   second = 2d;
+            var calc = new CSharpCalculator.Calculator();
+
+            Assert.AreEqual(double.NegativeInfinity, calc.Add(first, second));
+        }
+
+        [TestMethod]
+        public void TestAddWithPositiveInfinity()
+        {
+            double first = double.PositiveInfinity,
+                   second = 2d;
+            var calc = new CSharpCalculator.Calculator();
+
+            Assert.AreEqual(double.PositiveInfinity, calc.Add(first, second));
+        }
+
+        [TestMethod]
+        public void TestAddWithNan()
+        {
+            double first = double.NaN,
+                   second = 2d;
+            var calc = new CSharpCalculator.Calculator();
+
+            Assert.AreEqual(double.NaN, calc.Add(first, second));
+        }
     }
 }

@@ -39,5 +39,35 @@
 
             Assert.AreEqual(-1, calc.Cos(Math.PI));
         }
+
+        [TestMethod]
+        public void TestCosWithNegativeInfinity()
+        {
+            double first = double.NegativeInfinity;
+
+            var calc = new CSharpCalculator.Calculator();
+
+            AssertFailedException.Equals(new Exception(), calc.Cos(first));
+        }
+
+        [TestMethod]
+        public void TestCosWithPositiveInfinity()
+        {
+            double first = double.PositiveInfinity;
+
+            var calc = new CSharpCalculator.Calculator();
+
+            AssertFailedException.Equals(new Exception(), calc.Cos(first));
+        }
+
+        [TestMethod]
+        public void TestCosWithNaN()
+        {
+            double first = double.NaN;
+
+            var calc = new CSharpCalculator.Calculator();
+
+            AssertFailedException.Equals(new Exception(), calc.Cos(first));
+        }
     }
 }

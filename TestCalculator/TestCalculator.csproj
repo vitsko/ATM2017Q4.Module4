@@ -59,9 +59,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MSTest\TestIsNegative.cs" />
     <Compile Include="MSTest\TestAbs.cs" />
     <Compile Include="MSTest\TestAdd.cs" />
     <Compile Include="MSTest\TestCos.cs" />
+    <Compile Include="MSTest\TestDivide.cs" />
+    <Compile Include="MSTest\TestIsPositive.cs" />
+    <Compile Include="MSTest\TestMultiply.cs" />
+    <Compile Include="MSTest\TestPow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
