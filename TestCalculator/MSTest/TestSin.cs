@@ -4,18 +4,18 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class TestCos
+    public class TestSin
     {
         [TestMethod]
-        public void TestCosWithAnyOperand()
+        public void TestSinWithAnyOperand()
         {
-            object toCos = "10";
+            object toSin = "10--";
             double result;
 
-            if (double.TryParse(toCos.ToString(), out result))
+            if (double.TryParse(toSin.ToString(), out result))
             {
                 var calc = new CSharpCalculator.Calculator();
-                Assert.AreEqual(Math.Cos(result), calc.Cos(result));
+                Assert.AreEqual(Math.Sin(result), calc.Sin(result));
             }
             else
             {
@@ -24,46 +24,46 @@
         }
 
         [TestMethod]
-        public void TestCosWithZero()
+        public void TestSinWithZero()
         {
             var calc = new CSharpCalculator.Calculator();
 
-            Assert.AreEqual(1, calc.Cos(0));
+            Assert.AreEqual(0, calc.Sin(0));
         }
 
         [TestMethod]
-        public void TestCosWith180degrees()
+        public void TestSinWith90degrees()
         {
             var calc = new CSharpCalculator.Calculator();
 
-            Assert.AreEqual(-1, calc.Cos(Math.PI));
+            Assert.AreEqual(1, calc.Sin(Math.PI / 2));
         }
 
         [TestMethod]
-        public void TestCosWithNegativeInfinity()
+        public void TestSinWithNegativeInfinity()
         {
             double angleInRad = double.NegativeInfinity;
             var calc = new CSharpCalculator.Calculator();
 
-            Assert.AreEqual(double.NaN, calc.Cos(angleInRad));
+            Assert.AreEqual(double.NaN, calc.Sin(angleInRad));
         }
 
         [TestMethod]
-        public void TestCosWithPositiveInfinity()
+        public void TestSinWithPositiveInfinity()
         {
             double angleInRad = double.PositiveInfinity;
             var calc = new CSharpCalculator.Calculator();
 
-            Assert.AreEqual(double.NaN, calc.Cos(angleInRad));
+            Assert.AreEqual(double.NaN, calc.Sin(angleInRad));
         }
 
         [TestMethod]
-        public void TestCosWithNaN()
+        public void TestSinWithNaN()
         {
             double angleInRad = double.NaN;
             var calc = new CSharpCalculator.Calculator();
 
-            Assert.AreEqual(double.NaN, calc.Cos(angleInRad));
+            Assert.AreEqual(double.NaN, calc.Sin(angleInRad));
         }
     }
 }

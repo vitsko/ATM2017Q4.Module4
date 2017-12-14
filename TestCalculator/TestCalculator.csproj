@@ -59,6 +59,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MSTest\TestSub.cs" />
+    <Compile Include="MSTest\TestSin.cs" />
     <Compile Include="MSTest\TestIsNegative.cs" />
     <Compile Include="MSTest\TestAbs.cs" />
     <Compile Include="MSTest\TestAdd.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="MSTest\TestIsPositive.cs" />
     <Compile Include="MSTest\TestMultiply.cs" />
     <Compile Include="MSTest\TestPow.cs" />
+    <Compile Include="MSTest\TestSqrt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
