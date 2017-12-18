@@ -38,10 +38,6 @@
     <Reference Include="Calculator1">
       <HintPath>.\Calculator1.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -59,25 +55,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MSTest\TestSub.cs" />
-    <Compile Include="MSTest\TestSin.cs" />
-    <Compile Include="MSTest\TestIsNegative.cs" />
-    <Compile Include="MSTest\TestAbs.cs" />
-    <Compile Include="MSTest\TestAdd.cs" />
-    <Compile Include="MSTest\TestCos.cs" />
-    <Compile Include="MSTest\TestDivide.cs" />
-    <Compile Include="MSTest\TestIsPositive.cs" />
-    <Compile Include="MSTest\TestMultiply.cs" />
-    <Compile Include="MSTest\TestPow.cs" />
-    <Compile Include="MSTest\TestSqrt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\TestAbs.cs" />
+    <Compile Include="Tests\TestAdd.cs" />
+    <Compile Include="Tests\TestCos.cs" />
+    <Compile Include="Tests\TestDivide.cs" />
+    <Compile Include="Tests\TestIsNegative.cs" />
+    <Compile Include="Tests\TestIsPositive.cs" />
+    <Compile Include="Tests\TestMultiply.cs" />
+    <Compile Include="Tests\TestPow.cs" />
+    <Compile Include="Tests\TestSin.cs" />
+    <Compile Include="Tests\TestSqrt.cs" />
+    <Compile Include="Tests\TestSub.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NUnit\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
