@@ -1,81 +1,168 @@
 ﻿namespace TestCalculator
 {
+    using System;
+    using CSharpCalculator;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class TestAdd
     {
-        [TestMethod]
-        public void TestAddWithIncorrectOperand()
-        {
-            object toAdd1 = 10d;
-            object toAdd2 = "20";
-            var calc = new CSharpCalculator.Calculator();
+        private static Calculator calc;
+        private static object first, second;
 
-            try
+        public TestContext TestContext { get; set; }
+
+        /// <summary>
+        /// Initialize Calculator for test of operation Add
+        /// </summary>
+        /// <param name="context"></param>
+        [ClassInitialize]
+        public static void TestAddInitialize(TestContext context)
+        {
+            TestAdd.calc = new Calculator();
+        }
+
+        /// <summary>
+        /// Clean up Calculator for test of operation Add
+        /// </summary>
+        [ClassCleanup]
+        public static void TestAddCleanup()
+        {
+            TestAdd.calc = null;
+        }
+
+        /// <summary>
+        ///  Initializer for any test of operation Add
+        /// </summary>
+        [TestInitialize]
+        public void Initialize()
+        {
+            switch (TestContext.TestName)
             {
-                calc.Add(toAdd1, toAdd2);
-            }
-            catch
-            {
-                Assert.IsFalse(false);
+                case "TestAddWithAnyOperand":
+                    this.InitializeTestAddWithAnyOperand();
+                    break;
+                case "TestAddWithZero":
+                    this.InitializeTestAddWithZero();
+                    break;
+                case "TestAddWithNegativeInfinity":
+                    this.InitializeTestAddWithNegativeInfinity();
+                    break;
+                case "TestAddWithPositiveInfinity":
+                    this.InitializeTestAddWithPositiveInfinity();
+                    break;
+                case "TestAddWithNaN":
+                    this.InitializeTestAddWithNaN();
+                    break;
+                default:
+                    break;
             }
         }
 
+        /// <summary>
+        /// Clean up all data for any test of Add
+        /// </summary>
+        [TestCleanup]
+        public void CleanAllTests()
+        {
+            TestAdd.first = null;
+            TestAdd.second = null;
+        }
+
+        /// <summary>
+        /// Initialize data for TestAddWithAnyOperand
+        /// </summary>         
+        public void InitializeTestAddWithAnyOperand()
+        {
+            TestAdd.first = 10d;
+            TestAdd.second = "20";
+        }
+
+        /// <summary>
+        /// Test operation Add with any type of operand
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCastException))]
+        public void TestAddWithAnyOperand()
+        {
+            Assert.AreEqual(
+                                double.Parse(TestAdd.first.ToString()) + double.Parse(TestAdd.second.ToString()),
+                                TestAdd.calc.Add(TestAdd.first, TestAdd.second));
+        }
+
+        /// <summary>
+        /// Initialize data for TestAddWithZero
+        /// </summary>         
+        public void InitializeTestAddWithZero()
+        {
+            TestAdd.first = 10d;
+            TestAdd.second = 0;
+        }
+
+        /// <summary>
+        /// Test operation Add with operand is zero
+        /// </summary>
         [TestMethod]
         public void TestAddWithZero()
         {
-            object toAdd1 = 10d;
-            object toAdd2 = 0;
+            var toParse1 = double.Parse(TestAdd.first.ToString());
+            var toParse2 = double.Parse(TestAdd.second.ToString());
 
-            var calc = new CSharpCalculator.Calculator();
-            var toParse1 = double.Parse(toAdd1.ToString());
-            var toParse2 = double.Parse(toAdd2.ToString());
-
-            Assert.AreEqual(toParse1, calc.Add(toParse1, toParse2));
+            Assert.AreEqual(toParse1, TestAdd.calc.Add(toParse1, toParse2));
         }
 
-        [TestMethod]
-        public void TestAddWithNumber()
+        /// <summary>
+        /// Initialize data for TestAddWithNegativeInfinity
+        /// </summary>         
+        public void InitializeTestAddWithNegativeInfinity()
         {
-            object toAdd1 = 10.5D;
-            object toAdd2 = -1;
-
-            var calc = new CSharpCalculator.Calculator();
-            var toParse1 = double.Parse(toAdd1.ToString());
-            var toParse2 = double.Parse(toAdd2.ToString());
-
-            Assert.AreEqual(toParse1 + toParse2, calc.Add(toParse1, toParse2));
+            TestAdd.first = double.NegativeInfinity;
+            TestAdd.second = 2d;
         }
 
+        /// <summary>
+        /// Test operation Add with operand is double.NegativeInfinity
+        /// </summary>
         [TestMethod]
         public void TestAddWithNegativeInfinity()
         {
-            double first = double.NegativeInfinity,
-                   second = 2d;
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(double.NegativeInfinity, calc.Add(first, second));
+            Assert.AreEqual(double.NegativeInfinity, TestAdd.calc.Add(TestAdd.first, TestAdd.second));
         }
 
+        /// <summary>
+        /// Initialize data for TestAddWithNegativeInfinity
+        /// </summary>         
+        public void InitializeTestAddWithPositiveInfinity()
+        {
+            TestAdd.first = double.PositiveInfinity;
+            TestAdd.second = 2d;
+        }
+
+        /// <summary>
+        /// Test operation Add with operand is double.PositiveInfinity
+        /// </summary>
         [TestMethod]
         public void TestAddWithPositiveInfinity()
         {
-            double first = double.PositiveInfinity,
-                   second = 2d;
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(double.PositiveInfinity, calc.Add(first, second));
+            Assert.AreEqual(double.PositiveInfinity, TestAdd.calc.Add(TestAdd.first, TestAdd.second));
         }
 
-        [TestMethod]
-        public void TestAddWithNan()
+        /// <summary>
+        /// Initialize data for TestAddWithNaN
+        /// </summary>         
+        public void InitializeTestAddWithNaN()
         {
-            double first = double.NaN,
-                   second = 2d;
-            var calc = new CSharpCalculator.Calculator();
+            TestAdd.first = double.NaN;
+            TestAdd.second = 2d;
+        }
 
-            Assert.AreEqual(double.NaN, calc.Add(first, second));
+        /// <summary>
+        /// Test operation Add with operand is double.NaN
+        /// </summary>
+        [TestMethod]
+        public void TestAddWithNaN()
+        {
+            Assert.AreEqual(double.NaN, TestAdd.calc.Add(TestAdd.first, TestAdd.second));
         }
     }
 }

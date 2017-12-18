@@ -1,6 +1,7 @@
 ﻿namespace TestCalculator.MSTest
 {
     using System;
+    using CSharpCalculator;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -9,77 +10,189 @@
     [TestClass]
     public class TestSqrt
     {
+        private static Calculator calc;
+        private static object toSqrt;
+
+        public TestContext TestContext { get; set; }
+
+        /// <summary>
+        /// Initialize Calculator for test of operation Sqrt
+        /// </summary>
+        /// <param name="context"></param>
+        [ClassInitialize]
+        public static void TestSqrtInitialize(TestContext context)
+        {
+            TestSqrt.calc = new Calculator();
+        }
+
+        /// <summary>
+        /// Clean up Calculator for test of operation Sqrt
+        /// </summary>
+        [ClassCleanup]
+        public static void TestSqrtCleanup()
+        {
+            TestSqrt.calc = null;
+        }
+
+        /// <summary>
+        ///  Initializer for any test of operation Sqrt
+        /// </summary>
+        [TestInitialize]
+        public void Initialize()
+        {
+            switch (TestContext.TestName)
+            {
+                case "TestSqrtWithAnyOperand":
+                    this.InitializeTestSqrtWithAnyOperand();
+                    break;
+                case "TestSqrtPositiveNumber":
+                    this.InitializeTestSqrtPositiveNumber();
+                    break;
+                case "TestSqrtWithZero":
+                    this.InitializeTestSqrtWithZero();
+                    break;
+                case "TestSqrtNegativeNumber":
+                    this.InitializeTestSqrtNegativeNumber();
+                    break;
+                case "TestSqrtWithNaN":
+                    this.InitializeTestSqrtWithNaN();
+                    break;
+                case "TestSqrtWithPositiveInfinity":
+                    this.InitializeTestSqrtWithPositiveInfinity();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Clean up all data for any test of Sqrt
+        /// </summary>
+        [TestCleanup]
+        public void CleanAllTests()
+        {
+            TestSqrt.toSqrt = null;
+        }
+
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtWithAnyOperand
+        /// </summary>         
+        public void InitializeTestSqrtWithAnyOperand()
+        {
+            TestSqrt.toSqrt = "10";
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with any type of operand
+        /// </summary>
         [TestMethod]
         public void TestSqrtWithAnyOperand()
         {
-            // Value isn't 0.
-            object toSqrt = "10";
             double result;
 
             if (double.TryParse(toSqrt.ToString(), out result))
             {
                 if (result > 0)
                 {
-                    var calc = new CSharpCalculator.Calculator();
                     Assert.AreEqual(Math.Sqrt(result), calc.Sqrt(result));
                 }
                 else
                 {
-                    Assert.IsFalse(false);
+                    AssertFailedException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
                 }
             }
             else
             {
-                Assert.IsFalse(false);
+                AssertFailedException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
             }
         }
 
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtPositiveNumber
+        /// </summary>         
+        public void InitializeTestSqrtPositiveNumber()
+        {
+            // Value is positive number
+            TestSqrt.toSqrt = 5;
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with operand is positive number
+        /// </summary>
         [TestMethod]
         public void TestSqrtPositiveNumber()
         {
-            // Value is positive number.
-            double number = 9;
-
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(Math.Sqrt(number), calc.Sqrt(number));
+            Assert.AreEqual(Math.Sqrt(double.Parse(TestSqrt.toSqrt.ToString())), TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
         }
 
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtWithZero
+        /// </summary>         
+        public void InitializeTestSqrtWithZero()
+        {
+            // Value is 0
+            TestSqrt.toSqrt = 0;
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with operand is 0
+        /// </summary>
         [TestMethod]
         public void TestSqrtWithZero()
         {
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(0, calc.Sqrt(0));
+            Assert.AreEqual(0, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
         }
 
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtNegativeNumber
+        /// </summary>         
+        public void InitializeTestSqrtNegativeNumber()
+        {
+            // Value is negative number
+            TestSqrt.toSqrt = -3;
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with operand is less than 0
+        /// </summary>
         [TestMethod]
         public void TestSqrtNegativeNumber()
         {
-            // Value is negative number.
-            double number = -1;
-
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(double.NaN, calc.Sqrt(number));
+            Assert.AreEqual(double.NaN, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
         }
 
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtWithNaN
+        /// </summary>         
+        public void InitializeTestSqrtWithNaN()
+        {
+            TestSqrt.toSqrt = double.NaN;
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with operand is double.NaN
+        /// </summary>
         [TestMethod]
         public void TestSqrtWithNaN()
         {
-            double number = double.NaN;
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(double.NaN, calc.Sqrt(number));
+            Assert.AreEqual(double.NaN, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
         }
 
+        /// <summary>
+        /// Initialize toSqrt for TestSqrtWithPositiveInfinity
+        /// </summary>         
+        public void InitializeTestSqrtWithPositiveInfinity()
+        {
+            TestSqrt.toSqrt = double.PositiveInfinity;
+        }
+
+        /// <summary>
+        /// Test operation Sqrt with operand is double.PositiveInfinity
+        /// </summary>
         [TestMethod]
         public void TestSqrtWithPositiveInfinity()
         {
-            double number = double.PositiveInfinity;
-            var calc = new CSharpCalculator.Calculator();
-
-            Assert.AreEqual(double.PositiveInfinity, calc.Sqrt(number));
+            Assert.AreEqual(double.PositiveInfinity, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
         }
     }
 }
