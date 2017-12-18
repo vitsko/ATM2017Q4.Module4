@@ -1,23 +1,20 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestDivide
     {
         private static Calculator calc;
         private static double dividend, divider;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Divide
         /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestDivideInitialize(TestContext context)
+        [OneTimeSetUp]
+        public void TestDivideInitialize()
         {
             TestDivide.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Divide
         /// </summary>
-        [ClassCleanup]
-        public static void TestDivideCleanup()
+        [OneTimeTearDown]
+        public void TestDivideCleanup()
         {
             TestDivide.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Divide
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestDivideBySelf":
                     this.InitializeTestDivideBySelf();
@@ -68,7 +65,7 @@
         /// <summary>
         /// Clean up all data for any test of Divide
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestDivide.dividend = 0;
@@ -86,7 +83,7 @@
         /// <summary>
         /// Test operation Divide with operand is self
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideBySelf()
         {
             Assert.AreEqual(1.0d, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.dividend));
@@ -103,7 +100,7 @@
         /// <summary>
         /// Test operation Divide with operand is 1
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideByOne()
         {
             Assert.AreEqual(TestDivide.dividend, TestDivide.calc.Divide(TestDivide.dividend, 1));
@@ -120,10 +117,10 @@
         /// <summary>
         /// Test operation Divide with operand is 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideByZero()
         {
-            AssertFailedException.Equals(new Exception(), TestDivide.calc.Divide(TestDivide.dividend, 0));
+            AssertionException.Equals(new Exception(), TestDivide.calc.Divide(TestDivide.dividend, 0));
         }
 
         /// <summary>
@@ -138,7 +135,7 @@
         /// <summary>
         /// Test operation Divide with operands are double
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideWithDifferentOperands()
         {
             Assert.AreEqual(TestDivide.dividend / TestDivide.divider, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
@@ -158,7 +155,7 @@
         /// <summary>
         /// Test operation Divide with dividend is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideWithNegativeInfinity()
         {
             Assert.AreEqual(double.NegativeInfinity, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
@@ -178,7 +175,7 @@
         /// <summary>
         /// Test operation Divide with dividend is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideWithPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
@@ -196,7 +193,7 @@
         /// <summary>
         /// Test operation Divide with dividend is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestDivideWithNaN()
         {
             Assert.AreEqual(double.NaN, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));

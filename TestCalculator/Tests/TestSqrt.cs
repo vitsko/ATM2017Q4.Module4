@@ -2,25 +2,22 @@
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests are written by https://msdn.microsoft.com/ru-ru/library/system.math.sqrt(v=vs.110).aspx
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestSqrt
     {
         private static Calculator calc;
         private static object toSqrt;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Sqrt
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestSqrtInitialize(TestContext context)
+        /// </summary>        
+        [OneTimeSetUp]
+        public void TestSqrtInitialize()
         {
             TestSqrt.calc = new Calculator();
         }
@@ -28,8 +25,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Sqrt
         /// </summary>
-        [ClassCleanup]
-        public static void TestSqrtCleanup()
+        [OneTimeTearDown]
+        public void TestSqrtCleanup()
         {
             TestSqrt.calc = null;
         }
@@ -37,10 +34,10 @@
         /// <summary>
         ///  Initializer for any test of operation Sqrt
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestSqrtWithAnyOperand":
                     this.InitializeTestSqrtWithAnyOperand();
@@ -68,7 +65,7 @@
         /// <summary>
         /// Clean up all data for any test of Sqrt
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestSqrt.toSqrt = null;
@@ -85,7 +82,7 @@
         /// <summary>
         /// Test operation Sqrt with any type of operand
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtWithAnyOperand()
         {
             double result;
@@ -98,12 +95,12 @@
                 }
                 else
                 {
-                    AssertFailedException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
+                    AssertionException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
                 }
             }
             else
             {
-                AssertFailedException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
+                AssertionException.Equals(TestSqrt.calc.Sqrt(result), new Exception());
             }
         }
 
@@ -119,7 +116,7 @@
         /// <summary>
         /// Test operation Sqrt with operand is positive number
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtPositiveNumber()
         {
             Assert.AreEqual(Math.Sqrt(double.Parse(TestSqrt.toSqrt.ToString())), TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
@@ -137,7 +134,7 @@
         /// <summary>
         /// Test operation Sqrt with operand is 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtWithZero()
         {
             Assert.AreEqual(0, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
@@ -155,7 +152,7 @@
         /// <summary>
         /// Test operation Sqrt with operand is less than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtNegativeNumber()
         {
             Assert.AreEqual(double.NaN, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
@@ -172,7 +169,7 @@
         /// <summary>
         /// Test operation Sqrt with operand is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtWithNaN()
         {
             Assert.AreEqual(double.NaN, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));
@@ -189,7 +186,7 @@
         /// <summary>
         /// Test operation Sqrt with operand is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSqrtWithPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestSqrt.calc.Sqrt(TestSqrt.toSqrt));

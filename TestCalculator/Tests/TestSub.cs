@@ -2,22 +2,19 @@
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestSub
     {
         private static Calculator calc;
         private static object minuend, subtrahend;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Sub
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestSubInitialize(TestContext context)
+        /// </summary>        
+        [OneTimeSetUp]
+        public void TestSubInitialize()
         {
             TestSub.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Sub
         /// </summary>
-        [ClassCleanup]
-        public static void TestSubCleanup()
+        [OneTimeTearDown]
+        public void TestSubCleanup()
         {
             TestSub.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Add
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestSubWithAnyOperand":
                     this.InitializeTestSubWithAnyOperand();
@@ -68,7 +65,7 @@
         /// <summary>
         /// Clean up all data for any test of Sub
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestSub.minuend = null;
@@ -87,13 +84,13 @@
         /// <summary>
         /// Test operation Sub with any type of operand
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
+        [Test]
         public void TestSubWithAnyOperand()
         {
-            Assert.AreEqual(
-                                double.Parse(TestSub.minuend.ToString()) + double.Parse(TestSub.subtrahend.ToString()),
-                                TestSub.calc.Add(TestSub.minuend, TestSub.subtrahend));
+            Assert.Throws<InvalidCastException>(() =>
+                                                Assert.AreEqual(
+                                                                double.Parse(TestSub.minuend.ToString()) + double.Parse(TestSub.subtrahend.ToString()),
+                                                                TestSub.calc.Add(TestSub.minuend, TestSub.subtrahend)));
         }
 
         /// <summary>
@@ -108,7 +105,7 @@
         /// <summary>
         /// Test operation Sub with subtrahend is zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubZero()
         {
             var toParse1 = double.Parse(TestSub.minuend.ToString());
@@ -129,7 +126,7 @@
         /// <summary>
         /// Test operation Sub with minuend is zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubFromZero()
         {
             var calc = new CSharpCalculator.Calculator();
@@ -151,7 +148,7 @@
         /// <summary>
         /// Test operation Sub with operands are double
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubWithNumber()
         {
             var toParse1 = double.Parse(TestSub.minuend.ToString());
@@ -172,7 +169,7 @@
         /// <summary>
         /// Test operation Sub with minuend is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubWithNegativeInfinity()
         {
             Assert.AreEqual(double.NegativeInfinity, TestSub.calc.Sub(TestSub.minuend, TestSub.subtrahend));
@@ -190,7 +187,7 @@
         /// <summary>
         /// Test operation Sub with minuend is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubWithPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestSub.calc.Sub(TestSub.minuend, TestSub.subtrahend));
@@ -208,7 +205,7 @@
         /// <summary>
         /// Test operation Sub with minuend is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSubWithNan()
         {
             Assert.AreEqual(double.NaN, TestSub.calc.Sub(TestSub.minuend, TestSub.subtrahend));

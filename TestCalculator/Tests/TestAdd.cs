@@ -2,22 +2,19 @@
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestAdd
     {
         private static Calculator calc;
         private static object first, second;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Add
         /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestAddInitialize(TestContext context)
+        [OneTimeSetUp]
+        public void TestAddInitialize()
         {
             TestAdd.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Add
         /// </summary>
-        [ClassCleanup]
-        public static void TestAddCleanup()
+        [OneTimeTearDown]
+        public void TestAddCleanup()
         {
             TestAdd.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Add
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestAddWithAnyOperand":
                     this.InitializeTestAddWithAnyOperand();
@@ -62,7 +59,7 @@
         /// <summary>
         /// Clean up all data for any test of Add
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestAdd.first = null;
@@ -81,13 +78,13 @@
         /// <summary>
         /// Test operation Add with any type of operand
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(InvalidCastException))]
+        [Test]
         public void TestAddWithAnyOperand()
         {
-            Assert.AreEqual(
-                                double.Parse(TestAdd.first.ToString()) + double.Parse(TestAdd.second.ToString()),
-                                TestAdd.calc.Add(TestAdd.first, TestAdd.second));
+            Assert.Throws<InvalidCastException>(() =>
+                                                Assert.AreEqual(
+                                                                double.Parse(TestAdd.first.ToString()) + double.Parse(TestAdd.second.ToString()),
+                                                                TestAdd.calc.Add(TestAdd.first, TestAdd.second)));
         }
 
         /// <summary>
@@ -102,7 +99,7 @@
         /// <summary>
         /// Test operation Add with operand is zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAddWithZero()
         {
             var toParse1 = double.Parse(TestAdd.first.ToString());
@@ -123,7 +120,7 @@
         /// <summary>
         /// Test operation Add with operand is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAddWithNegativeInfinity()
         {
             Assert.AreEqual(double.NegativeInfinity, TestAdd.calc.Add(TestAdd.first, TestAdd.second));
@@ -141,7 +138,7 @@
         /// <summary>
         /// Test operation Add with operand is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAddWithPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestAdd.calc.Add(TestAdd.first, TestAdd.second));
@@ -159,7 +156,7 @@
         /// <summary>
         /// Test operation Add with operand is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAddWithNaN()
         {
             Assert.AreEqual(double.NaN, TestAdd.calc.Add(TestAdd.first, TestAdd.second));

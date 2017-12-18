@@ -1,23 +1,20 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestSin
     {
         private static Calculator calc;
         private static object angleInRadian;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Sin
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestSqrtInitialize(TestContext context)
+        /// </summary>       
+        [OneTimeSetUp]
+        public void TestSqrtInitialize()
         {
             TestSin.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Sin
         /// </summary>
-        [ClassCleanup]
-        public static void TestSinCleanup()
+        [OneTimeTearDown]
+        public void TestSinCleanup()
         {
             TestSin.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Sin
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestSinWithAnyOperand":
                     this.InitializeTestSinWithAnyOperand();
@@ -65,7 +62,7 @@
         /// <summary>
         /// Clean up all data for any test of Sin
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestSin.angleInRadian = null;
@@ -82,7 +79,7 @@
         /// <summary>
         /// Test operation Sin with any type of operand
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWithAnyOperand()
         {
             double result;
@@ -93,7 +90,7 @@
             }
             else
             {
-                AssertFailedException.Equals(TestSin.calc.Sin(result), new Exception());
+                AssertionException.Equals(TestSin.calc.Sin(result), new Exception());
             }
         }
 
@@ -108,7 +105,7 @@
         /// <summary>
         /// Test operation Sin with operand is 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWithZero()
         {
             Assert.AreEqual(0, TestSin.calc.Sin(TestSin.angleInRadian));
@@ -125,7 +122,7 @@
         /// <summary>
         /// Test operation Sin with operand is 90 degrees
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWith90degrees()
         {
             Assert.AreEqual(1, TestSin.calc.Sin(TestSin.angleInRadian));
@@ -142,7 +139,7 @@
         /// <summary>
         /// Test operation Sin with operand is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWithNegativeInfinity()
         {
             Assert.AreEqual(double.NaN, TestSin.calc.Sin(TestSin.angleInRadian));
@@ -159,7 +156,7 @@
         /// <summary>
         /// Test operation Sin with operand is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWithPositiveInfinity()
         {
             Assert.AreEqual(double.NaN, calc.Sin(TestSin.angleInRadian));
@@ -176,7 +173,7 @@
         /// <summary>
         /// Test operation Sin with operand is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestSinWithNaN()
         {
             double angleInRad = double.NaN;

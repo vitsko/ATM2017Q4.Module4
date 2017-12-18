@@ -1,26 +1,23 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests are written by https://msdn.microsoft.com/ru-ru/library/system.math.pow(v=vs.110).aspx.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestPow
     {
         private static Calculator calc;
         private static object number, power;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Pow
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestAddInitialize(TestContext context)
+        /// </summary>      
+        [OneTimeSetUp]
+        public void TestAddInitialize()
         {
             TestPow.calc = new Calculator();
         }
@@ -28,8 +25,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Pow
         /// </summary>
-        [ClassCleanup]
-        public static void TestPowCleanup()
+        [OneTimeTearDown]
+        public void TestPowCleanup()
         {
             TestPow.calc = null;
         }
@@ -37,10 +34,10 @@
         /// <summary>
         ///  Initializer for any test of operation Pow
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestPowWithAnyOperands":
                     this.InitializeTestPowWithAnyOperands();
@@ -113,7 +110,7 @@
         /// <summary>
         /// Clean up all data for any test of Pow
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestPow.number = null;
@@ -132,13 +129,13 @@
         /// <summary>
         /// Test operation Pow with any type of operand
         /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NotFiniteNumberException))]
+        [Test]
         public void TestPowWithAnyOperands()
         {
-            Assert.AreEqual(
-                                double.Parse(TestPow.number.ToString()) + double.Parse(TestPow.power.ToString()),
-                                TestPow.calc.Pow(TestPow.number, TestPow.power));
+            Assert.Throws<NotFiniteNumberException>(() =>
+                                                    Assert.AreEqual(
+                                                                    double.Parse(TestPow.number.ToString()) + double.Parse(TestPow.power.ToString()),
+                                                                    TestPow.calc.Pow(TestPow.number, TestPow.power)));
         }
 
         /// <summary>
@@ -152,7 +149,7 @@
         /// <summary>
         ///  Test operation Pow with power is 1
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByOne()
         {
             Assert.AreEqual(TestPow.number, TestPow.calc.Pow(TestPow.number, 1));
@@ -169,7 +166,7 @@
         /// <summary>
         /// Test operation Pow with power is 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithPowerZero()
         {
             Assert.AreEqual(1d, TestPow.calc.Pow(TestPow.number, 0));
@@ -186,7 +183,7 @@
         /// <summary>
         /// Test operation Pow with power is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByPowerNaN()
         {
             Assert.AreEqual(double.NaN, TestPow.calc.Pow(TestPow.number, double.NaN));
@@ -203,7 +200,7 @@
         /// <summary>
         /// Test operation Pow with number is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByNumberNaN()
         {
             Assert.AreEqual(double.NaN, TestPow.calc.Pow(double.NaN, TestPow.power));
@@ -221,7 +218,7 @@
         /// <summary>
         /// Test operation Pow with number is double.NegativeInfinity and power is less than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByNumberNegativeInfinity()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(double.NegativeInfinity, TestPow.power));
@@ -239,7 +236,7 @@
         /// <summary>
         ///  Test operation Pow with number is double.NegativeInfinity and power is a positive odd integer
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByOddPower()
         {
             Assert.AreEqual(double.NegativeInfinity, TestPow.calc.Pow(double.NegativeInfinity, TestPow.power));
@@ -257,7 +254,7 @@
         /// <summary>
         /// Test operation Pow with number is double.NegativeInfinity and power is a positive even integer
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByEvenPower()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(double.NegativeInfinity, TestPow.power));
@@ -278,7 +275,7 @@
         /// <summary>
         /// Test operation Pow with number is negative, but isn't NegativeInfinity, and power isn't an integer, NegativeInfinity, or PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByDoublePower()
         {
             Assert.AreEqual(double.NaN, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -299,7 +296,7 @@
         /// <summary>
         /// Test operation Pow with number is -1, and power is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByMinusOne()
         {
             Assert.AreEqual(double.NaN, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -320,7 +317,7 @@
         /// <summary>
         /// Test operation Pow with number is in  range from -1 to 1 and power is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByRangeMinus1By1AndNegativeInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -341,7 +338,7 @@
         /// <summary>
         /// Test operation Pow with number is in  range from -1 to 1 and power is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowByRangeMinus1By1AndPositiveInfinity()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -362,7 +359,7 @@
         /// <summary>
         /// Test operation Pow with number is less than -1 and power is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithLessThanMinus1AndNegativeInfinity()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -383,7 +380,7 @@
         /// <summary>
         ///  Test operation Pow with number is great than 1 and power is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithGreatThan1AndNegativeInfinity()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -404,7 +401,7 @@
         /// <summary>
         /// Test operation Pow with number is less than -1 and power is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithLessThanMinus1AndPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -425,7 +422,7 @@
         /// <summary>
         /// Test operation Pow with number is great than 1 and power is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithGreatThan1AndPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -446,7 +443,7 @@
         /// <summary>
         ///  Test operation Pow with number is 0 and power is less than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithNumberZeroAndPowerLessZero()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -467,7 +464,7 @@
         /// <summary>
         ///  Test operation Pow with number is 0 and power is great than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithNumberZeroAndPowerGreatZero()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -488,7 +485,7 @@
         /// <summary>
         ///  Test operation Pow with number is 1 and power isn't NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithNumberOneAndPowerNotNaN()
         {
             Assert.AreEqual(1d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -509,7 +506,7 @@
         /// <summary>
         /// Test operation Pow with number is double.PositiveInfinity and power is less than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithNumberPositiveInfinityAndPowerLessZero()
         {
             Assert.AreEqual(0d, TestPow.calc.Pow(TestPow.number, TestPow.power));
@@ -530,7 +527,7 @@
         /// <summary>
         /// Test operation Pow with number is double.PositiveInfinity and power is great than 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestPowWithNumberPositiveInfinityAndPowerGreatZero()
         {
             Assert.AreEqual(double.PositiveInfinity, TestPow.calc.Pow(TestPow.number, TestPow.power));

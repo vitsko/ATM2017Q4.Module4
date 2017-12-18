@@ -2,31 +2,28 @@
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestAbs
     {
         private static Calculator calc;
         private static object toAbs;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
-        /// Initialize Calculator for test of operation Abs
+        /// Initialize TestAbs.calculator for test of operation Abs
         /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestAbsInitialize(TestContext context)
+        [OneTimeSetUp]
+        public void TestAbsInitialize()
         {
             TestAbs.calc = new Calculator();
         }
 
         /// <summary>
-        /// Clean up Calculator for test of operation Abs
+        /// Clean up TestAbs.calculator for test of operation Abs
         /// </summary>
-        [ClassCleanup]
-        public static void TestAbsCleanup()
+        [OneTimeTearDown]
+        public void TestAbsCleanup()
         {
             TestAbs.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Abs
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestAbsWithAnyOperandAndInt":
                     this.InitializeTestAbsWithAnyOperandAndInt();
@@ -51,7 +48,7 @@
                 case "TestAbsIntWithGreatThanZero":
                     this.InitializeTestAbsIntWithGreatThanZero();
                     break;
-                case "TestFailAbsWithNotInt":
+                case "TestNUnitFailAbsWithNotInt":
                     this.InitializeTestFailAbsWithNotInt();
                     break;
                 default:
@@ -62,14 +59,14 @@
         /// <summary>
         /// Clean up all data for any test of Abs
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestAbs.toAbs = null;
         }
 
         /// <summary>
-        /// Initialize toAbs for TestAbsWithAnyOperandAndInt
+        /// Initialize TestAbs.toAbs for TestAbsWithAnyOperandAndInt
         /// </summary>         
         public void InitializeTestAbsWithAnyOperandAndInt()
         {
@@ -79,7 +76,7 @@
         /// <summary>
         /// Test operation Abs with any type of operand
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAbsWithAnyOperandAndInt()
         {
             double result;
@@ -90,12 +87,12 @@
             }
             else
             {
-                AssertFailedException.Equals(TestAbs.calc.Abs(result), new Exception());
+                AssertionException.Equals(TestAbs.calc.Abs(result), new Exception());
             }
         }
 
         /// <summary>
-        /// Initialize toAbs for InitializeTestAbsWithZero
+        /// Initialize TestAbs.toAbs for InitializeTestAbsWithZero
         /// </summary>      
         public void InitializeTestAbsWithZero()
         {
@@ -105,15 +102,15 @@
         /// <summary>
         /// Test operation Abs with operand is zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAbsWithZero()
         {
-            var result = double.Parse(toAbs.ToString());
+            var result = double.Parse(TestAbs.toAbs.ToString());
             Assert.AreEqual(result, TestAbs.calc.Abs(result));
         }
 
         /// <summary>
-        /// Initialize toAbs for TestAbsIntWithLessThanZero
+        /// Initialize TestAbs.toAbs for TestAbsIntWithLessThanZero
         /// </summary>
         public void InitializeTestAbsIntWithLessThanZero()
         {
@@ -123,15 +120,15 @@
         /// <summary>
         /// Test operation Abs with operand is less than zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAbsIntWithLessThanZero()
         {
-            var result = double.Parse(toAbs.ToString());
+            var result = double.Parse(TestAbs.toAbs.ToString());
             Assert.AreEqual(result * -1, TestAbs.calc.Abs(result));
         }
 
         /// <summary>
-        /// Initialize toAbs for TestAbsIntWithGreatThanZero
+        /// Initialize TestAbs.toAbs for TestAbsIntWithGreatThanZero
         /// </summary>
         public void InitializeTestAbsIntWithGreatThanZero()
         {
@@ -141,15 +138,15 @@
         /// <summary>
         /// Test operation Abs with operand is great than zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestAbsIntWithGreatThanZero()
         {
-            var result = double.Parse(toAbs.ToString());
+            var result = double.Parse(TestAbs.toAbs.ToString());
             Assert.AreEqual(result, TestAbs.calc.Abs(result));
         }
 
         /// <summary>
-        /// Initialize toAbs for TestFailAbsWithNotInt
+        /// Initialize TestAbs.toAbs for TestFailAbsWithNotInt
         /// </summary>
         public void InitializeTestFailAbsWithNotInt()
         {
@@ -159,10 +156,10 @@
         /// <summary>
         /// Test operation Abs with operand isn't integer.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestFailAbsWithNotInt()
         {
-            var result = double.Parse(toAbs.ToString());
+            var result = double.Parse(TestAbs.toAbs.ToString());
 
             if (result > 0)
             {

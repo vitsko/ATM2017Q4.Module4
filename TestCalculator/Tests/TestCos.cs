@@ -1,23 +1,20 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestCos
     {
         private static Calculator calc;
         private static object angleInRadian;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Cos
         /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestAddInitialize(TestContext context)
+        [OneTimeSetUp]
+        public void TestAddInitialize()
         {
             TestCos.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation Cos
         /// </summary>
-        [ClassCleanup]
-        public static void TestCosCleanup()
+        [OneTimeTearDown]
+        public void TestCosCleanup()
         {
             TestCos.calc = null;
         }
@@ -34,10 +31,10 @@
         /// <summary>
         ///  Initializer for any test of operation Cos
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestCosWithAnyOperand":
                     this.InitializeTestCosWithAnyOperand();
@@ -65,7 +62,7 @@
         /// <summary>
         /// Clean up all data for any test of Cos
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestCos.angleInRadian = null;
@@ -82,7 +79,7 @@
         /// <summary>
         /// Test operation Cos with any type of operand
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWithAnyOperand()
         {
             double result;
@@ -93,7 +90,7 @@
             }
             else
             {
-                AssertFailedException.Equals(TestCos.calc.Cos(result), new Exception());
+                AssertionException.Equals(TestCos.calc.Cos(result), new Exception());
             }
         }
 
@@ -108,7 +105,7 @@
         /// <summary>
         /// Test operation Cos with operand is zero
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWithZero()
         {
             var calc = new CSharpCalculator.Calculator();
@@ -127,7 +124,7 @@
         /// <summary>
         /// Test operation Cos with operand is 180 degrees
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWith180degrees()
         {
             Assert.AreEqual(-1, calc.Cos(TestCos.angleInRadian));
@@ -144,7 +141,7 @@
         /// <summary>
         /// Test operation Cos with operand is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWithNegativeInfinity()
         {
             Assert.AreEqual(double.NaN, calc.Cos(TestCos.angleInRadian));
@@ -161,7 +158,7 @@
         /// <summary>
         /// Test operation Cos with operand is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWithPositiveInfinity()
         {
             Assert.AreEqual(double.NaN, calc.Cos(TestCos.angleInRadian));
@@ -178,7 +175,7 @@
         /// <summary>
         ///  Test operation Cos with operand is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestCosWithNaN()
         {
             Assert.AreEqual(double.NaN, calc.Cos(TestCos.angleInRadian));

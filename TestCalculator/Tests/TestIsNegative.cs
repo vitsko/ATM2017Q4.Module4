@@ -1,23 +1,20 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using System;
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestIsNegative
     {
         private static Calculator calc;
         private static object value;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation IsNegative
-        /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestAddInitialize(TestContext context)
+        /// </summary>        
+        [OneTimeSetUp]
+        public void TestAddInitialize()
         {
             TestIsNegative.calc = new Calculator();
         }
@@ -25,8 +22,8 @@
         /// <summary>
         /// Clean up Calculator for test of operation IsNegative
         /// </summary>
-        [ClassCleanup]
-        public static void TestIsNegativeCleanup()
+        [OneTimeTearDown]
+        public void TestIsNegativeCleanup()
         {
             TestIsNegative.calc = null;
         }
@@ -34,7 +31,7 @@
         /// <summary>
         ///  Initializer for any test of operation IsNegative
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             TestIsNegative.value = -10.8;
@@ -43,7 +40,7 @@
         /// <summary>
         /// Clean up all data for any test of IsNegative
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestIsNegative.value = null;
@@ -52,7 +49,7 @@
         /// <summary>
         /// Test operation IsNegative with operand is any object
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestIsNegativeWithAnyOperand()
         {
             double result;
@@ -63,7 +60,7 @@
             }
             else
             {
-                AssertFailedException.Equals(TestIsNegative.calc.isNegative(result), new Exception());
+                AssertionException.Equals(TestIsNegative.calc.isNegative(result), new Exception());
             }
         }
     }

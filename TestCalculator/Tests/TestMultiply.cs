@@ -1,22 +1,19 @@
-﻿namespace TestCalculator.MSTest
+﻿namespace TestCalculator
 {
     using CSharpCalculator;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class TestMultiply
     {
         private static Calculator calc;
         private static double multiplied, factor;
 
-        public TestContext TestContext { get; set; }
-
         /// <summary>
         /// Initialize Calculator for test of operation Multiply
         /// </summary>
-        /// <param name="context"></param>
-        [ClassInitialize]
-        public static void TestMultiplyInitialize(TestContext context)
+        [OneTimeSetUp]
+        public static void TestMultiplyInitialize()
         {
             TestMultiply.calc = new Calculator();
         }
@@ -24,7 +21,7 @@
         /// <summary>
         /// Clean up Calculator for test of operation Multiply
         /// </summary>
-        [ClassCleanup]
+        [OneTimeTearDown]
         public static void TestMultiplyCleanup()
         {
             TestMultiply.calc = null;
@@ -33,10 +30,10 @@
         /// <summary>
         ///  Initializer for any test of operation Multiply
         /// </summary>
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
-            switch (TestContext.TestName)
+            switch (TestContext.CurrentContext.Test.Name)
             {
                 case "TestMultiplyBySelf":
                     this.InitializeTestMultiplyBySelf();
@@ -67,7 +64,7 @@
         /// <summary>
         /// Clean up all data for any test of Multiply
         /// </summary>
-        [TestCleanup]
+        [TearDown]
         public void CleanAllTests()
         {
             TestMultiply.multiplied = 0;
@@ -85,7 +82,7 @@
         /// <summary>
         /// Test operation Multiply with operand is self
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyBySelf()
         {
             Assert.AreEqual(
@@ -104,7 +101,7 @@
         /// <summary>
         /// Test operation Multiply with factor is 1
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyByOne()
         {
             Assert.AreEqual(TestMultiply.multiplied, TestMultiply.calc.Multiply(TestMultiply.multiplied, 1));
@@ -121,7 +118,7 @@
         /// <summary>
         /// Test operation Multiply with factor is 0
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyByZero()
         {
             Assert.AreEqual(0, TestMultiply.calc.Multiply(TestMultiply.multiplied, 0));
@@ -139,7 +136,7 @@
         /// <summary>
         /// Test operation Divide with operands are double
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyWithDifferentOperands()
         {
             Assert.AreEqual(TestMultiply.multiplied * TestMultiply.factor, TestMultiply.calc.Multiply(TestMultiply.multiplied, TestMultiply.factor));
@@ -159,7 +156,7 @@
         /// <summary>
         ///  Test operation Multiply with multiplied is double.NegativeInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyWithNegativeInfinity()
         {
             Assert.AreEqual(double.NegativeInfinity, TestMultiply.calc.Multiply(TestMultiply.multiplied, TestMultiply.factor));
@@ -179,7 +176,7 @@
         /// <summary>
         /// Test operation Multiply with multiplied is double.PositiveInfinity
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyWithPositiveInfinity()
         {
             Assert.AreEqual(double.PositiveInfinity, TestMultiply.calc.Multiply(TestMultiply.multiplied, TestMultiply.factor));
@@ -197,7 +194,7 @@
         /// <summary>
         /// Test operation Multiply with multiplied is double.NaN
         /// </summary>
-        [TestMethod]
+        [Test]
         public void TestMultiplyWithNaN()
         {
             Assert.AreEqual(double.NaN, TestMultiply.calc.Multiply(TestMultiply.multiplied, TestMultiply.factor));
