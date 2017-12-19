@@ -4,6 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
+    [Parallelizable(ParallelScope.All)]
     public class TestDivide
     {
         private static Calculator calc;
