@@ -1,6 +1,5 @@
 ﻿namespace TestCalculator
 {
-    using System;
     using CSharpCalculator;
     using NUnit.Framework;
 
@@ -8,7 +7,6 @@
     public class TestDivide
     {
         private static Calculator calc;
-        private static double dividend, divider;
 
         /// <summary>
         /// Initialize Calculator for test of operation Divide
@@ -29,174 +27,77 @@
         }
 
         /// <summary>
-        ///  Initializer for any test of operation Divide
+        /// Test operation Divide with dividend is divider
         /// </summary>
-        [SetUp]
-        public void Initialize()
+        [TestCase(12.5d, ExpectedResult = 1d, Category = "Dividend is divider")]
+        [TestCase(0, ExpectedResult = double.NaN, Category = "Dividend is divider")]
+        [TestCase(-3, ExpectedResult = 1.0d, Category = "Dividend is divider")]
+        [TestCase(double.NaN, ExpectedResult = double.NaN, Category = "Dividend is divider")]
+        [TestCase(double.NegativeInfinity, ExpectedResult = double.NaN, Category = "Dividend is divider")]
+        [TestCase(double.PositiveInfinity, ExpectedResult = double.NaN, Category = "Dividend is divider")]
+        [TestCase(double.MaxValue, ExpectedResult = 1d, Category = "Dividend is divider")]
+        [TestCase(double.MinValue, ExpectedResult = 1d, Category = "Dividend is divider")]
+        [TestCase(double.Epsilon, ExpectedResult = 1d, Category = "Dividend is divider")]
+        public double TestDivideBySelf(double dividend)
         {
-            switch (TestContext.CurrentContext.Test.Name)
-            {
-                case "TestDivideBySelf":
-                    this.InitializeTestDivideBySelf();
-                    break;
-                case "TestDivideByOne":
-                    this.InitializeTestDivideByOne();
-                    break;
-                case "TestDivideByZero":
-                    this.InitializeTestDivideByZero();
-                    break;
-                case "TestDivideWithDifferentOperands":
-                    this.InitializeTestDivideWithDifferentOperands();
-                    break;
-                case "TestDivideWithNegativeInfinity":
-                    this.InitializeTestDivideWithNegativeInfinity();
-                    break;
-                case "TestDivideWithPositiveInfinity":
-                    this.InitializeTestDivideWithPositiveInfinity();
-                    break;
-                case "TestDivideWithNaN":
-                    this.InitializeTestDivideWithNaN();
-                    break;
-                default:
-                    break;
-            }
+            return TestDivide.calc.Divide(dividend, dividend);
         }
 
         /// <summary>
-        /// Clean up all data for any test of Divide
+        /// Test operation Divide with divider is 1d
         /// </summary>
-        [TearDown]
-        public void CleanAllTests()
+        [TestCase(12.5d, ExpectedResult = 12.5d, Category = "Divider is 1d")]
+        [TestCase(0, ExpectedResult = 0d, Category = "Divider is 1d")]
+        [TestCase(-3, ExpectedResult = -3d, Category = "Divider is 1d")]
+        [TestCase(double.NaN, ExpectedResult = double.NaN, Category = "Divider is 1d")]
+        [TestCase(double.NegativeInfinity, ExpectedResult = double.NegativeInfinity, Category = "Divider is 1d")]
+        [TestCase(double.PositiveInfinity, ExpectedResult = double.PositiveInfinity, Category = "Divider is 1d")]
+        [TestCase(double.MaxValue, ExpectedResult = double.MaxValue, Category = "Divider is 1d")]
+        [TestCase(double.MinValue, ExpectedResult = double.MinValue, Category = "Divider is 1d")]
+        [TestCase(double.Epsilon, ExpectedResult = double.Epsilon, Category = "Divider is 1d")]
+        public double TestDivideByOne(double dividend)
         {
-            TestDivide.dividend = 0;
-            TestDivide.divider = 0;
+            return TestDivide.calc.Divide(dividend, 1d);
         }
 
         /// <summary>
-        /// Initialize dividend for TestDivideBySelf
-        /// </summary>         
-        public void InitializeTestDivideBySelf()
-        {
-            TestDivide.dividend = 10.8d;
-        }
-
-        /// <summary>
-        /// Test operation Divide with operand is self
+        /// Test operation Divide with divider is 0
         /// </summary>
-        [Test]
-        public void TestDivideBySelf()
+        [TestCase(12, ExpectedResult = double.PositiveInfinity, Category = "Divider is 0d")]
+        [TestCase(0, ExpectedResult = double.NaN, Category = "Divider is 0d")]
+        [TestCase(-3, ExpectedResult = double.NegativeInfinity, Category = "Divider is 0d")]
+        [TestCase(double.NaN, ExpectedResult = double.NaN, Category = "Divider is 0d")]
+        [TestCase(double.NegativeInfinity, ExpectedResult = double.NegativeInfinity, Category = "Divider is 0d")]
+        [TestCase(double.PositiveInfinity, ExpectedResult = double.PositiveInfinity, Category = "Divider is 0d")]
+        [TestCase(double.MaxValue, ExpectedResult = double.PositiveInfinity, Category = "Divider is 0d")]
+        [TestCase(double.MinValue, ExpectedResult = double.NegativeInfinity, Category = "Divider is 0d")]
+        [TestCase(double.Epsilon, ExpectedResult = double.PositiveInfinity, Category = "Divider is 0d")]
+        public object TestDivideByZero(double dividend)
         {
-            Assert.AreEqual(1.0d, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.dividend));
-        }
-
-        /// <summary>
-        /// Initialize dividend for TestDivideByOne
-        /// </summary>         
-        public void InitializeTestDivideByOne()
-        {
-            TestDivide.dividend = 10.2d;
-        }
-
-        /// <summary>
-        /// Test operation Divide with operand is 1
-        /// </summary>
-        [Test]
-        public void TestDivideByOne()
-        {
-            Assert.AreEqual(TestDivide.dividend, TestDivide.calc.Divide(TestDivide.dividend, 1));
-        }
-
-        /// <summary>
-        /// Initialize dividend for TestDivideByZero
-        /// </summary>         
-        public void InitializeTestDivideByZero()
-        {
-            TestDivide.dividend = 12.5;
-        }
-
-        /// <summary>
-        /// Test operation Divide with operand is 0
-        /// </summary>
-        [Test]
-        public void TestDivideByZero()
-        {
-            AssertionException.Equals(new Exception(), TestDivide.calc.Divide(TestDivide.dividend, 0));
-        }
-
-        /// <summary>
-        /// Initialize dividend and divider for TestDivideWithDifferentOperands
-        /// </summary>         
-        public void InitializeTestDivideWithDifferentOperands()
-        {
-            TestDivide.dividend = 12.5;
-            TestDivide.divider = -2d;
+            return TestDivide.calc.Divide(dividend, 0);
         }
 
         /// <summary>
         /// Test operation Divide with operands are double
         /// </summary>
-        [Test]
-        public void TestDivideWithDifferentOperands()
+        [TestCase(12, 8.5, ExpectedResult = 12 / 8.5, Category = "Operands are double")]
+        [TestCase(0, 0, ExpectedResult = double.NaN, Category = "Operands are double")]
+        [TestCase(-3, 7d, ExpectedResult = -3 / 7d, Category = "Operands are double")]
+        [TestCase(double.NaN, 9, ExpectedResult = double.NaN, Category = "Operands are double")]
+        [TestCase(double.NegativeInfinity, 8, ExpectedResult = double.NegativeInfinity, Category = "Operands are double")]
+        [TestCase(double.PositiveInfinity, 7, ExpectedResult = double.PositiveInfinity, Category = "Operands are double")]
+        [TestCase(double.MaxValue, 10, ExpectedResult = double.MaxValue / 10, Category = "Operands are double")]
+        [TestCase(double.MinValue, 112.35d, ExpectedResult = double.MinValue / 112.35d, Category = "Operands are double")]
+        [TestCase(double.Epsilon, 123d, ExpectedResult = double.Epsilon / 123d, Category = "Operands are double")]
+        [TestCase(9, double.NaN, ExpectedResult = double.NaN, Category = "Operands are double")]
+        [TestCase(8, double.NegativeInfinity, ExpectedResult = 8 / double.NegativeInfinity, Category = "Operands are double")]
+        [TestCase(7, double.PositiveInfinity, ExpectedResult = 7 / double.PositiveInfinity, Category = "Operands are double")]
+        [TestCase(10, double.MaxValue, ExpectedResult = 10 / double.MaxValue, Category = "Operands are double")]
+        [TestCase(112.35d, double.MinValue, ExpectedResult = 112.35d / double.MinValue, Category = "Operands are double")]
+        [TestCase(123d, double.Epsilon, ExpectedResult = 123d / double.Epsilon, Category = "Operands are double")]
+        public double TestDivideWithDifferentOperands(double dividend, double divider)
         {
-            Assert.AreEqual(TestDivide.dividend / TestDivide.divider, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
-        }
-
-        /// <summary>
-        /// Initialize dividend and divider for TestDivideWithNegativeInfinity
-        /// </summary>         
-        public void InitializeTestDivideWithNegativeInfinity()
-        {
-            TestDivide.dividend = double.NegativeInfinity;
-
-            /// Value must be great than 0
-            TestDivide.divider = 2d;
-        }
-
-        /// <summary>
-        /// Test operation Divide with dividend is double.NegativeInfinity
-        /// </summary>
-        [Test]
-        public void TestDivideWithNegativeInfinity()
-        {
-            Assert.AreEqual(double.NegativeInfinity, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
-        }
-
-        /// <summary>
-        /// Initialize dividend and divider for TestDivideWithPositiveInfinity
-        /// </summary>         
-        public void InitializeTestDivideWithPositiveInfinity()
-        {
-            TestDivide.dividend = double.PositiveInfinity;
-
-            /// Value must be great than 0
-            TestDivide.divider = 2d;
-        }
-
-        /// <summary>
-        /// Test operation Divide with dividend is double.PositiveInfinity
-        /// </summary>
-        [Test]
-        public void TestDivideWithPositiveInfinity()
-        {
-            Assert.AreEqual(double.PositiveInfinity, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
-        }
-
-        /// <summary>
-        /// Initialize dividend and divider for TestDivideWithNaN
-        /// </summary>         
-        public void InitializeTestDivideWithNaN()
-        {
-            TestDivide.dividend = double.NaN;
-            TestDivide.divider = 2d;
-        }
-
-        /// <summary>
-        /// Test operation Divide with dividend is double.NaN
-        /// </summary>
-        [Test]
-        public void TestDivideWithNaN()
-        {
-            Assert.AreEqual(double.NaN, TestDivide.calc.Divide(TestDivide.dividend, TestDivide.divider));
+            return TestDivide.calc.Divide(dividend, divider);
         }
     }
 }
